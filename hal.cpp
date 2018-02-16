@@ -619,7 +619,7 @@ void  GPS_UART_SetBaudrate(int BaudRate) { UART2_SetBaudrate(BaudRate); }
 
 // -------------------------------------------------------------------------------------------------------
 
-void IO_Configuration(void)
+void IO_Configuration(bool withWatchdog)
 {
   RCC_Configuration();
 
@@ -652,9 +652,11 @@ void IO_Configuration(void)
   I2C_Mutex[1] = xSemaphoreCreateMutex();
 #endif
 
-  IWDG_Configuration();                    // setup watch-dog
-  IWDG_ReloadCounter();
-  IWDG_Enable();
+  if (withWatchdog) {
+    IWDG_Configuration();                    // setup watch-dog
+    IWDG_ReloadCounter();
+    IWDG_Enable();
+  }
 }
 
 // -------------------------------------------------------------------------------------------------------

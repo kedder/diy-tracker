@@ -60,7 +60,6 @@ RTOS = FreeRTOS_9.0.0
 
 #-------------------------------------------------------------------------------
 
-C_SRC += main.cpp
 C_SRC += hal.cpp
 
 C_SRC += timesync.cpp
@@ -288,7 +287,8 @@ LNK_OPT += -nostartfiles --specs=nosys.specs --specs=nano.specs
 LNK_OPT += -lgcc -lc # -lstdc++
 LNK_OPT += -T$(LDSCRIPT)
 
-OBJECTS = $(patsubst %,$(OBJDIR)/%.o,$(basename $(notdir $(C_SRC))))
+MAIN_C_SRC = main.cpp $(C_SRC)
+OBJECTS = $(patsubst %,$(OBJDIR)/%.o,$(basename $(notdir $(MAIN_C_SRC))))
 vpath %.c $(sort $(dir $(C_SRC)))
 vpath %.cpp $(sort $(dir $(C_SRC)))
 
@@ -332,15 +332,15 @@ $(OUTDIR)/main.elf: $(OBJECTS) $(OTHER_DEPS)
 
 #-------------------------------------------------------------------------------
 
-$(OUTDIR)/main.hex: $(OUTDIR)/main.elf
+$(OUTDIR)/%.hex: $(OUTDIR)/%.elf
 	@echo "> create hex image       ... $(notdir $@)"
 	@$(OBJCOPY) -O ihex $< $@
 
-$(OUTDIR)/main.bin: $(OUTDIR)/main.elf
+$(OUTDIR)/%.bin: $(OUTDIR)/%.elf
 	@echo "> create bin image       ... $(notdir $@)"
 	@$(OBJCOPY) -O binary $< $@
 
-$(OUTDIR)/main.dmp: $(OUTDIR)/main.elf
+$(OUTDIR)/%.dmp: $(OUTDIR)/%.elf
 	@echo "> create exe dump        ... $(notdir $@)"
 	@$(OBJDUMP) -d -S $< > $@
 
@@ -360,3 +360,17 @@ arch:	clean
 
 # Include the dependency files.
 -include $(wildcard $(OBJDIR)/*.d) faked.include.file
+
+
+#-------------------------------------------------------------------------------
+# Setup binary
+#
+SETUP_C_SRC = setup.cpp $(C_SRC)
+SETUP_OBJECTS = $(patsubst %,$(OBJDIR)/%.o,$(basename $(notdir $(SETUP_C_SRC))))
+
+.PHONY: setup
+setup: $(OUTDIR) $(OBJDIR) $(OUTDIR)/setup.hex $(OUTDIR)/setup.dmp $(OUTDIR)/setup.bin
+
+$(OUTDIR)/setup.elf: $(SETUP_OBJECTS) $(OTHER_DEPS)
+	@echo "> link setup executable        ... $(notdir $@)"
+	@$(CPP) $(CC_OPT) $(LNK_OPT) -o $@ $(SETUP_OBJECTS)

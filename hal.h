@@ -29,7 +29,7 @@ extern FlashParameters Parameters;
 
 void RCC_Configuration(void);            // Configure CPU clock, memory
 
-void IO_Configuration(void);             // Configure I/O
+void IO_Configuration(bool withWatchdog=true); // Configure I/O
 
 void IWDG_Configuration(void);           // configure watchdog
 
