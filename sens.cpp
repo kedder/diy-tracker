@@ -88,6 +88,8 @@ static Delay<int32_t, 8>        PressDelay; // 4-second delay for long-term clim
 
 static char Line[64];                       // line to prepare the barometer NMEA sentence
 
+static bool GPSAltAcquired;
+
 static uint8_t InitBaro()
 { // xSemaphoreTake(I2C_Mutex, portMAX_DELAY);
   Baro.Bus=BARO_I2C;
@@ -178,7 +180,14 @@ static void ProcBaro(void)
 #endif
     Pressure = (Pressure+2)>>2;                                      // [0.25 Pa]
     if( (Phase>=500) && GPS_TimeSinceLock )
-    { PressAver.Process(Pressure);                                   // [0.25 Pa] pass pressure through low pass filter
+    {
+      if (!GPSAltAcquired) {
+        // Set initial altitude and pressure at that altitude for averager
+        AltAver.Set(GPS_Altitude);
+        PressAver.Set(Pressure);
+        GPSAltAcquired = true;
+      }
+      PressAver.Process(Pressure);                                   // [0.25 Pa] pass pressure through low pass filter
       AltAver.Process(GPS_Altitude);                                 // [0.1 m] pass GPS altitude through same low pass filter
     }
     int32_t PressDiff=Pressure-((PressAver.Out+2048)>>12);           // [0.25 Pa] pressure - <pressure>
@@ -274,6 +283,7 @@ void vTaskSENS(void* pvParameters)
   AltAver.Set(0);                      // [m] Altitude at sea level
   PressAver.Set(4*101300);             // [Pa] Pressure at sea level
   PressDelay.Clear(4*101300);
+  GPSAltAcquired = false;
 
   uint8_t Detected = InitBaro();
 #endif
