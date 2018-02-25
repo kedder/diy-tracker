@@ -249,6 +249,18 @@ static void ProcBaro(void)
       xSemaphoreGive(Log_Mutex); }
 #endif
 
+    // Trick XCSoar to interpret the following $PGRMZ sentence as "pressure altitude"
+    // instead of "baro altitude". When device, sending PGRMZ sentence is found to be
+    // a FLARM device, XCSoar interprets value of PGRMZ as "pressure altitude", i.e.
+    // barometric altitude at standard atmospheric pressure. Otherwise (when FLARM
+    // is not detected), it interprets PGRMZ as "QNH-compensated barometric altitude"
+    Len=0;
+    Len+=Format_String(Line+Len, "$PFLAU,0,0,");
+    Line[Len++]=(Phase>=500) && GPS_TimeSinceLock ? '1' : '0';
+    Len+=Format_String(Line+Len, ",1,0,,0,,,");
+    Len+=NMEA_AppendCheckCRNL(Line, Len);
+    Format_String(CONS_UART_Write, Line, Len);
+
     Len=0;                                                           // start preparing the PGRMZ NMEA sentence
     Len+=Format_String(Line+Len, "$PGRMZ,");
     Len+=Format_SignDec(Line+Len, StdAltitude, 2, 1);                // [m] standard altitude (calc. from pressure)
