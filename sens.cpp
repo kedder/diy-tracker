@@ -259,7 +259,7 @@ static void ProcBaro(void)
     Line[Len++]=(Phase>=500) && GPS_TimeSinceLock ? '1' : '0';
     Len+=Format_String(Line+Len, ",1,0,,0,,,");
     Len+=NMEA_AppendCheckCRNL(Line, Len);
-    Format_String(CONS_UART_Write, Line, Len);
+    Format_String(CONS_UART_Write, Line, Len, 0);
 
     Len=0;                                                           // start preparing the PGRMZ NMEA sentence
     Len+=Format_String(Line+Len, "$PGRMZ,");
