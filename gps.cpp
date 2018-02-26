@@ -76,7 +76,7 @@ static const uint32_t BaudRate[BaudRates] = { 4800, 9600, 19200, 38400, 57600, 1
 uint32_t GPS_getBaudRate (void) { return BaudRate[BaudRateIdx]; }
 uint32_t GPS_nextBaudRate(void) { BaudRateIdx++; if(BaudRateIdx>=BaudRates) BaudRateIdx=0; return GPS_getBaudRate(); }
 
-const uint32_t GPS_TargetBaudRate = 57600; // BaudRate[4]; // [bps] must be one of the baud rates known by the autbaud
+const uint32_t GPS_TargetBaudRate = 19200; // BaudRate[2]; // [bps] must be one of the baud rates known by the autbaud
 const uint8_t  GPS_dynModel       =     7; // for UBX GPS's: 6 = airborne with >1g, 7 = with >2g
 
 // ----------------------------------------------------------------------------
