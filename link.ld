@@ -2,7 +2,7 @@ OUTPUT_FORMAT ("elf32-littlearm", "elf32-bigarm", "elf32-littlearm")
 /* Internal Memory Map*/
 MEMORY
 {
-	rom (rx)  : ORIGIN = 0x08000000, LENGTH = 0x00010000
+	rom (rx)  : ORIGIN = 0x08002000, LENGTH = 128K - 8K
 	ram (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00005000
 }
 
@@ -129,4 +129,4 @@ SECTIONS
 	
 	/* Check if data + heap + stack exceeds ram  limit */
 	ASSERT(__StackLimit >= __HeapLimit, "region ram  overflowed with stack")
-}
+}
