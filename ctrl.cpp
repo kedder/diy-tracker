@@ -432,7 +432,8 @@ void vTaskCTRL(void* pvParameters)
 #ifdef WITH_SDLOG
   if(ReadParmFile()>0)
   { if(Parameters.CompareToFlash()<=0)                         // if new parameters are difference from those in Flash
-    { // Parameters.WriteToFlash();                               // write the new parameters to Flash
+    {
+      Parameters.WriteToFlash();                               // write the new parameters to Flash
     }
   }
 #endif
