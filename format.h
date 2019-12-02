@@ -87,7 +87,9 @@ int16_t Read_Dec4(const char *Inp);             // convert three digit decimal n
      { Dig=Read_UnsDec(Value, Inp+Len); }
      if(Dig<=0) return Dig;
      Len+=Dig;
-     if(Sign=='-') Value=(-Value); return Len; }
+     if(Sign=='-') Value=(-Value);
+     return Len;
+    }
 
   template <class Type>
    int8_t Read_Float1(Type &Value, const char *Inp)       // read floating point, take just one digit after decimal point

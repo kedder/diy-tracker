@@ -305,10 +305,10 @@ class FlashParameters
       setTxPower(TxPower); return 1; }
     if(strcmp(Name, "PPSdelay")==0)
     { uint32_t Delay=0; if(Read_Int(Delay, Value)<=0) return 0;
-      if(Delay>0xFF) Delay=0xFF; PPSdelay=Delay; return 1; }
+      if(Delay>0xFF) {Delay=0xFF;} PPSdelay=Delay; return 1; }
     if(strcmp(Name, "FreqPlan")==0)
     { uint32_t Plan=0; if(Read_Int(Plan, Value)<=0) return 0;
-      if(Plan>5) Plan=5; FreqPlan=Plan; return 1; }
+      if(Plan>5) {Plan=5;} FreqPlan=Plan; return 1; }
     if(strcmp(Name, "FreqCorr")==0)
     { int32_t Corr=0; if(Read_Float1(Corr, Value)<=0) return 0;
       RFchipFreqCorr=10*Corr; return 1; }

@@ -668,7 +668,8 @@ void LDPC_Encode(const uint8_t *Data, uint8_t *Parity, const uint32_t ParityGen[
     const uint8_t *Gen = (uint8_t *)(ParityGen[Row]);
     for(uint8_t Idx=0; Idx<20; Idx++)
     { Count+=Count1s((uint8_t)(Data[Idx]&Gen[Idx])); }
-    if(Count&1) ParByte|=Mask; Mask<<=1;
+    if(Count&1) ParByte|=Mask;
+    Mask<<=1;
     if(Mask==0) { Parity[ParIdx++]=ParByte; Mask=1; ParByte=0; }
   }
   // if(Mask!=1) Parity[ParIdx]=ParByte;
@@ -689,7 +690,8 @@ static void LDPC_Encode(const uint32_t *Data, uint32_t *Parity, uint8_t DataWord
   { uint8_t Count=0;
     for(uint8_t Idx=0; Idx<DataWords; Idx++)
     { Count+=Count1s(Data[Idx]&Gen[Idx]); }
-    if(Count&1) Parity[ParIdx]|=Mask; Mask<<=1;
+    if(Count&1) Parity[ParIdx]|=Mask;
+    Mask<<=1;
     if(Mask==0) { ParIdx++; Parity[ParIdx]=0; Mask=1; }
     Gen+=DataWords; }
   // printf(" => %08X %08X\n", Parity[0], Parity[1] );

@@ -531,7 +531,7 @@ class OGN_Packet           // Packet structure for the OGN tracker
      if(Range==0) return Value;              // 000..0FF
      if(Range==1) return 0x101+(Value<<1);   // 100..2FE
      if(Range==2) return 0x302+(Value<<2);   // 300..6FC
-                  return 0x704+(Value<<3); } // 700..EF8                       // in 12bit (0..3832)
+     return 0x704+(Value<<3); }              // 700..EF8                       // in 12bit (0..3832)
 
    static uint8_t EncodeUR2V5(uint16_t Value)                                  // Encode unsigned 9bit (0..472) as 7bit
    {      if(Value<0x020) { }
@@ -617,7 +617,7 @@ class OGN_Packet           // Packet structure for the OGN tracker
      if(Range==0) return         Value;       // 0000..0FFF
      if(Range==1) return 0x1001+(Value<<1);   // 1000..2FFE
      if(Range==2) return 0x3002+(Value<<2);   // 3000..6FFC
-                  return 0x7004+(Value<<3); } // 7000..EFF8 => max: 61432
+     return 0x7004+(Value<<3); }              // 7000..EFF8 => max: 61432
 
    void EncodeAltitude(int32_t Altitude)                               // encode altitude in meters
    { if(Altitude<0)      Altitude=0;
@@ -642,7 +642,7 @@ class OGN_Packet           // Packet structure for the OGN tracker
      if(Range==0) return       DOP;              // 00..0F
      if(Range==1) return 0x11+(DOP<<1);          // 10..2E
      if(Range==2) return 0x32+(DOP<<2);          // 30..6C
-                  return 0x74+(DOP<<3); }        // 70..E8 => max. DOP = 232*0.1=23.2
+     return 0x74+(DOP<<3); }                     // 70..E8 => max. DOP = 232*0.1=23.2
 
    void EncodeSpeed(int16_t Speed)                                       // speed in 0.2 knots (or 0.1m/s)
    {      if(Speed<0)     Speed=0;
