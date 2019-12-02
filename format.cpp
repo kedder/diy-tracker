@@ -117,7 +117,7 @@ void Format_SignDec( void (*Output)(char), int32_t Value, uint8_t MinDigits, uin
 
 void Format_UnsDec( void (*Output)(char), uint64_t Value, uint8_t MinDigits, uint8_t DecPoint)
 { uint64_t Base; uint8_t Pos;
-  for( Pos=20, Base=10000000000000000000; Base; Base/=10, Pos--)
+  for( Pos=20, Base=10000000000000000000U; Base; Base/=10, Pos--)
   { uint8_t Dig;
     if(Value>=Base)
     { Dig=Value/Base; Value-=Dig*Base; }

@@ -60,11 +60,13 @@ static uint8_t crc7(uint8_t crc, uint8_t byte)
     crc <<= 1; }
   return crc; }
 
+/*
 static uint8_t crc7(const uint8_t *data, int len)          // CRC for data blocks
 { uint8_t crc = 0;
   for (int j=0; j<len; j++)
   { crc = crc7(crc, data[j]); }
   return crc>>1; }
+*/
 
 static uint16_t crc16_ccitt(uint16_t crc, uint8_t byte)
 { crc  = (uint8_t)(crc >> 8) | (crc << 8);

@@ -84,10 +84,12 @@ static void ReadStatus(OGN_TxPacket &StatPacket)                            // r
     Len+=Format_UnsDec(Line+Len, (uint16_t)TX_Credit);
     Line[Len++]=',';
     Len+=Format_SignDec(Line+Len, (int16_t)RF_Temp);                         // the temperature of the RF chip
+#ifdef WITH_STM32
     Line[Len++]=',';
-    // Len+=Format_SignDec(Line+Len, MCU_Temp, 2, 1);
+    Len+=Format_SignDec(Line+Len, MCU_Temp, 2, 1);
     Line[Len++]=',';
-    // Len+=Format_UnsDec(Line+Len, (MCU_VCC+5)/10, 3, 2);
+    Len+=Format_UnsDec(Line+Len, (MCU_VCC+5)/10, 3, 2);
+#endif
 
     Len+=NMEA_AppendCheckCRNL(Line, Len);                                    // append NMEA check-sum and CR+NL
     // LogLine(Line);

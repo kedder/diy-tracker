@@ -76,7 +76,9 @@ static MS5607   Baro;                       // BMP280 barometer sensor
 #endif
 
 static uint32_t AverPress;                  // [ Pa] summed Pressure over several readouts
+#ifdef WITH_BMP180
 static uint8_t  AverCount;                  // [int] number of summed Pressure readouts
+#endif
 
 static SlopePipe<int32_t>        BaroPipe;  // 4-point slope-fit pipe for pressure
 static LowPass2<int32_t,6,4,8>   BaroNoise; // low pass (average) filter for pressure noise
@@ -172,8 +174,8 @@ static void ProcBaro(void)
 
     int32_t Pressure=BaroPipe.Aver;                                  // [1/16Pa]
     int32_t StdAltitude = Atmosphere::StdAltitude((Pressure+8)>>4);  // [0.1 m]
-    int32_t ClimbRate4sec = ((Pressure-PressDelay.Input(Pressure))*PLR)/3200; // [0.01m/sec] climb rate over 4 sec.
 #ifdef WITH_VARIO
+    int32_t ClimbRate4sec = ((Pressure-PressDelay.Input(Pressure))*PLR)/3200; // [0.01m/sec] climb rate over 4 sec.
     VarioSound(ClimbRate);
     // if(abs(ClimbRate4sec)>50) VarioSound(ClimbRate);
     //                      else VarioSound(2*ClimbRate4sec);
