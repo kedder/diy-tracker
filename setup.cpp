@@ -113,6 +113,7 @@ static int _btChat(void) {
 	bt_name[offset++] = 0;
 
 
+	if (!_btSay(BT_AT, 1)) return 4;
  	if (!_btSay(BT_AT_VERSION, 2)) return 3;
 	if (!_btSay(bt_name, 1)) return 2;
 	if (!_btSay(BT_AT_UART, 1)) return 1;
@@ -121,7 +122,7 @@ static int _btChat(void) {
 
 static int setupBluetooth(void) {
 	log("* Setting up bluetooth: \r\n");
-	sleep(500);
+	sleep(300);
  	UART_Configuration(BLUETOOTH_BAUD, GPS_BAUD);
 
  	int err = _btChat();
